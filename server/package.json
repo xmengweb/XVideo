@@ -1,0 +1,36 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "esno ./src/index.ts",
+    "dev": "esno watch ./src/index.ts",
+    "prod": "esno ./dist/index.js",
+    "build": "tsup ./src/index.ts",
+    "nodemonstart": "ts-node src/index.ts",
+    "nodemondev": "nodemon --exec ts-node src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/koa": "^2.13.10",
+    "@types/koa__router": "^12.0.3",
+    "nodemon": "^3.0.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@koa/bodyparser": "^5.0.0",
+    "@koa/router": "^12.0.1",
+    "@types/node": "^20.8.9",
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1",
+    "esno": "^0.17.0",
+    "koa": "^2.14.2",
+    "mysql2": "^3.6.2",
+    "sequelize": "^6.33.0",
+    "tsup": "^7.2.0"
+  }
+}
