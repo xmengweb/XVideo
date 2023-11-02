@@ -47,6 +47,8 @@ const Vod = sequelize.define(
     vod_down: { type: DataTypes.MEDIUMINT.UNSIGNED, defaultValue: '0', allowNull: false },
     vod_score: { type: DataTypes.DECIMAL(3, 1).UNSIGNED, defaultValue: '0.0', allowNull: false },
     vod_score_all: { type: DataTypes.MEDIUMINT.UNSIGNED, defaultValue: '0', allowNull: false },
+    vod_douban_id: { type: DataTypes.INTEGER.UNSIGNED, defaultValue: 0, allowNull: false },
+    vod_douban_score: { type: DataTypes.DECIMAL(3, 1).UNSIGNED, defaultValue: '0.0', allowNull: false },
     vod_state_num: { type: DataTypes.MEDIUMINT.UNSIGNED, defaultValue: '0', allowNull: false },
     vod_time: { type: DataTypes.STRING(30), defaultValue: '0', allowNull: false },
     vod_time_add: { type: DataTypes.INTEGER.UNSIGNED, defaultValue: '0', allowNull: false },
