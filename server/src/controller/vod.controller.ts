@@ -46,8 +46,8 @@ class VodController {
 
   //搜索
   async search(ctx: Context, next: Next) {
-    const { name } = ctx.query;
-    const res = await vodService.search(name);
+    const { name, pageNum = 1 } = ctx.query;
+    const res = await vodService.search(name, parseInt(pageNum as string));
     ctx.body = {
       message: '查询成功',
       res,
