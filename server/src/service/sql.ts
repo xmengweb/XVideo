@@ -96,6 +96,57 @@ const Type = sequelize.define(
   }
 );
 
+const Topic = sequelize.define(
+  'topic',
+  {
+    topic_id: { type: DataTypes.SMALLINT.UNSIGNED, allowNull: false, primaryKey: true, autoIncrement: true },
+    topic_name: { type: DataTypes.STRING, allowNull: false, defaultValue: '' },
+    topic_status: { type: DataTypes.TINYINT.UNSIGNED, allowNull: false, defaultValue: '1' },
+    topic_sort: { type: DataTypes.SMALLINT.UNSIGNED, allowNull: false, defaultValue: '0' },
+    topic_pic: { type: DataTypes.STRING, defaultValue: '' },
+    topic_pic_thumb: { type: DataTypes.STRING, defaultValue: '' },
+    topic_pic_slide: { type: DataTypes.STRING, defaultValue: '' },
+    topic_des: { type: DataTypes.STRING, defaultValue: '' },
+    topic_blurb: { type: DataTypes.STRING, defaultValue: '' },
+    topic_remarks: { type: DataTypes.STRING, defaultValue: '' },
+    topic_level: { type: DataTypes.TINYINT.UNSIGNED, allowNull: false, defaultValue: '0' },
+    topic_time: { type: DataTypes.SMALLINT.UNSIGNED, allowNull: false, defaultValue: '0' },
+    topic_time_add: { type: DataTypes.SMALLINT.UNSIGNED, allowNull: false, defaultValue: '0' },
+    topic_tag: { type: DataTypes.STRING, defaultValue: '' },
+    topic_rel_vod: { type: DataTypes.TEXT, allowNull: false },
+  },
+  {
+    timestamps: false, // 假设表没有时间戳
+    indexes: [
+      // 建立索引
+      {
+        name: 'topic_sort',
+        using: 'BTREE',
+        fields: ['topic_sort'],
+      },
+      {
+        name: 'topic_level',
+        using: 'BTREE',
+        fields: ['topic_level'],
+      },
+      {
+        name: 'topic_name',
+        using: 'BTREE',
+        fields: ['topic_name'],
+      },
+      {
+        name: 'topic_time',
+        using: 'BTREE',
+        fields: ['topic_time'],
+      },
+    ],
+    charset: 'utf8',
+    engine: 'MYISAM',
+    tableName: 'topic',
+    initialAutoIncrement: '1',
+  }
+);
+
 (async () => {
   await sequelize.sync();
   console.log('所有模型均已成功同步.');
@@ -103,4 +154,4 @@ const Type = sequelize.define(
 
 export default sequelize;
 
-export { Vod, Type };
+export { Vod, Type, Topic };
