@@ -1,13 +1,19 @@
 import Router from '@koa/router';
 
-const router = new Router({prefix:'/user'});
+const router = new Router({ prefix: '/user' });
 
-router.get('/',async(ctx,next)=>{
-	ctx.body='hello user'
-})
+router.get('/', async (ctx, next) => {
+  ctx.body = 'hello user';
+});
 
-export{
-	router
-}
+//登录
 
-export default router.routes()
+//注册
+
+//历史查询
+
+//收藏
+
+export { router };
+
+export default router.routes();

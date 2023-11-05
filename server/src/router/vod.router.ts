@@ -6,7 +6,10 @@ const router = new Router({ prefix: '/vod' });
 //采集视频
 router.post('/cj', vodController.cj);
 
-//个人推荐接口
+//设置topic电影单
+router.post('setTopic', vodController.setTopic);
+
+//获取电影单首页列表
 
 //获取某部电影详情
 router.get('/detail/:id', vodController.getDetail);
@@ -22,19 +25,6 @@ router.get('/updateType', vodController.updateType);
 //片库总筛选
 
 //获取轮播图视频列表
-
-//获取电影列表
-//获取热播列表(电影/电视剧/综艺..)
-
-//最新列表
-
-//好莱坞电影
-
-//奈飞
-
-//韩剧
-
-//美剧
 
 //...
 

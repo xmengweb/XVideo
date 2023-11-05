@@ -30,7 +30,7 @@ class vodService {
     }
   }
   async search(name: any, pageNum = 1) {
-    const res = await Vod.findAll({
+    const res = await Vod.findAndCountAll({
       attributes: [
         'vod_id',
         'type_id',
@@ -54,6 +54,10 @@ class vodService {
       limit: pageSize, // 获取 pageSize 条数据
     });
     return res;
+  }
+  async setTopic(topicList: Array<any>) {
+    const res = await Type.bulkCreate(topicList);
+    return res.map((value) => value.toJSON());
   }
 }
 

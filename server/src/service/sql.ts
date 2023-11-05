@@ -147,8 +147,15 @@ const Topic = sequelize.define(
   }
 );
 
+Type.hasMany(Vod, {
+  foreignKey: 'type_id',
+});
+Vod.belongsTo(Type, {
+  foreignKey: 'type_id',
+});
+
 (async () => {
-  await sequelize.sync();
+  await sequelize.sync({ force: true });
   console.log('所有模型均已成功同步.');
 })();
 
