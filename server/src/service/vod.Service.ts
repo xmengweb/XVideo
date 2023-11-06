@@ -1,5 +1,5 @@
 import { Op } from 'sequelize';
-import sequelize, { Vod, Type } from './sql';
+import sequelize, { Vod, Type, Topic } from './sql';
 
 const pageSize = 10;
 
@@ -56,8 +56,23 @@ class vodService {
     return res;
   }
   async setTopic(topicList: Array<any>) {
-    const res = await Type.bulkCreate(topicList);
-    return res.map((value) => value.toJSON());
+    // const note = await Type.create({ title: 'note' }); // (1)
+    // await note.creat({ name: 'tag' }, { through: { type: 0 }}); // (2)
+    try {
+      // 批量创建topic
+      const createdTopics = await Topic.bulkCreate(topicList);
+      for (let i = 0; i < createdTopics.length; i++) {
+        let topic = createdTopics[i];
+
+        // 这里假设videoList[i]存在且为有效的video ID
+        await topic.addVod(topicList[i].topic_rel_vod.split(','));
+      }
+
+      return 'ok';
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
   }
 }
 

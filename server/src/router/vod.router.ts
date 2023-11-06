@@ -7,7 +7,7 @@ const router = new Router({ prefix: '/vod' });
 router.post('/cj', vodController.cj);
 
 //设置topic电影单
-router.post('setTopic', vodController.setTopic);
+router.post('/setTopic', vodController.setTopic);
 
 //获取电影单首页列表
 

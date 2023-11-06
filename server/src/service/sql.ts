@@ -1,5 +1,5 @@
 import { DBPASSWORD } from '@/config/env';
-import { DataTypes, Sequelize } from 'sequelize';
+import { BelongsToManyAddAssociationMixin, DataTypes, Model, Sequelize } from 'sequelize';
 
 const sequelize = new Sequelize('xmvideo', 'xmvideo', DBPASSWORD, {
   host: 'mysql.sqlpub.com',
@@ -18,10 +18,9 @@ const sequelize = new Sequelize('xmvideo', 'xmvideo', DBPASSWORD, {
 })();
 
 const Vod = sequelize.define(
-  'vod',
+  'Vod',
   {
     vod_id: { type: DataTypes.INTEGER.UNSIGNED, autoIncrement: true, primaryKey: true, allowNull: false },
-    type_id: { type: DataTypes.SMALLINT, defaultValue: '0', allowNull: false },
     type_id_1: { type: DataTypes.SMALLINT.UNSIGNED, defaultValue: '0', allowNull: false },
     group_id: { type: DataTypes.SMALLINT.UNSIGNED, defaultValue: '0', allowNull: false },
     vod_name: { type: DataTypes.STRING(255), defaultValue: '', allowNull: false },
@@ -61,7 +60,6 @@ const Vod = sequelize.define(
     charset: 'utf8',
     engine: 'MYISAM',
     indexes: [
-      { name: 'type_id', fields: ['type_id'], using: 'BTREE' },
       { name: 'type_id_1', fields: ['type_id_1'], using: 'BTREE' },
       { name: 'vod_level', fields: ['vod_level'], using: 'BTREE' },
       { name: 'vod_name', fields: ['vod_name'], using: 'BTREE' },
@@ -77,7 +75,7 @@ const Vod = sequelize.define(
 );
 
 const Type = sequelize.define(
-  'type',
+  'Type',
   {
     type_id: { type: DataTypes.SMALLINT.UNSIGNED, autoIncrement: true, primaryKey: true },
     type_name: { type: DataTypes.STRING(60), allowNull: false, defaultValue: '' },
@@ -85,19 +83,22 @@ const Type = sequelize.define(
     type_status: { type: DataTypes.TINYINT.UNSIGNED, allowNull: false, defaultValue: 1 },
   },
   {
+    tableName: 'type',
     timestamps: false,
     indexes: [
       { name: 'type_pid', fields: ['type_pid'], using: 'BTREE' },
       { name: 'type_name', fields: ['type_name'] },
     ],
-    tableName: 'type',
     engine: 'MyISAM',
     charset: 'utf8',
   }
 );
 
-const Topic = sequelize.define(
-  'topic',
+interface TopicInstance extends Model {
+  addVod: BelongsToManyAddAssociationMixin<any, number>;
+}
+const Topic = sequelize.define<TopicInstance>(
+  'Topic',
   {
     topic_id: { type: DataTypes.SMALLINT.UNSIGNED, allowNull: false, primaryKey: true, autoIncrement: true },
     topic_name: { type: DataTypes.STRING, allowNull: false, defaultValue: '' },
@@ -110,12 +111,13 @@ const Topic = sequelize.define(
     topic_blurb: { type: DataTypes.STRING, defaultValue: '' },
     topic_remarks: { type: DataTypes.STRING, defaultValue: '' },
     topic_level: { type: DataTypes.TINYINT.UNSIGNED, allowNull: false, defaultValue: '0' },
-    topic_time: { type: DataTypes.SMALLINT.UNSIGNED, allowNull: false, defaultValue: '0' },
-    topic_time_add: { type: DataTypes.SMALLINT.UNSIGNED, allowNull: false, defaultValue: '0' },
+    topic_time: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false, defaultValue: '0' },
+    topic_time_add: { type: DataTypes.BIGINT.UNSIGNED, allowNull: false, defaultValue: '0' },
     topic_tag: { type: DataTypes.STRING, defaultValue: '' },
     topic_rel_vod: { type: DataTypes.TEXT, allowNull: false },
   },
   {
+    tableName: 'topic',
     timestamps: false, // 假设表没有时间戳
     indexes: [
       // 建立索引
@@ -142,17 +144,16 @@ const Topic = sequelize.define(
     ],
     charset: 'utf8',
     engine: 'MYISAM',
-    tableName: 'topic',
     initialAutoIncrement: '1',
   }
 );
 
-Type.hasMany(Vod, {
-  foreignKey: 'type_id',
-});
-Vod.belongsTo(Type, {
-  foreignKey: 'type_id',
-});
+Type.hasMany(Vod, { foreignKey: 'type_id' });
+Vod.belongsTo(Type, { foreignKey: 'type_id' });
+
+// 然后设置关联关系
+Topic.belongsToMany(Vod, { through: 'TopicVideos', foreignKey: 'topic_id' });
+Vod.belongsToMany(Topic, { through: 'TopicVideos', foreignKey: 'vod_id' });
 
 (async () => {
   await sequelize.sync({ force: true });
