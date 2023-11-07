@@ -10,6 +10,7 @@ router.post('/cj', vodController.cj);
 router.post('/setTopic', vodController.setTopic);
 
 //获取电影单首页列表
+router.get('/getTopicList', vodController.getTopicList);
 
 //获取某部电影详情
 router.get('/detail/:id', vodController.getDetail);
@@ -23,8 +24,10 @@ router.get('/updateType', vodController.updateType);
 //相关电影推荐
 
 //片库总筛选
+router.post('/filterVod', vodController.filterVod);
 
 //获取轮播图视频列表
+router.get('/getRotationList', vodController.getRotationList);
 
 //...
 

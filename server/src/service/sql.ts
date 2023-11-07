@@ -152,11 +152,11 @@ Type.hasMany(Vod, { foreignKey: 'type_id' });
 Vod.belongsTo(Type, { foreignKey: 'type_id' });
 
 // 然后设置关联关系
-Topic.belongsToMany(Vod, { through: 'TopicVideos', foreignKey: 'topic_id' });
+Topic.belongsToMany(Vod, { through: 'TopicVideos', foreignKey: 'topic_id', onDelete: 'CASCADE' });
 Vod.belongsToMany(Topic, { through: 'TopicVideos', foreignKey: 'vod_id' });
 
 (async () => {
-  await sequelize.sync({ force: true });
+  await sequelize.sync();
   console.log('所有模型均已成功同步.');
 })();
 

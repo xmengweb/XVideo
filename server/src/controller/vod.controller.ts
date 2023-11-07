@@ -55,7 +55,7 @@ class VodController {
       message: '查询成功',
       vodList: res.rows,
       vodCount: res.count,
-      pageNum: Math.ceil(res.count / 10),
+      pageTotal: Math.ceil(res.count / 10),
     };
   }
 
@@ -96,6 +96,44 @@ class VodController {
       code: 200,
       message: '更新成功',
       topicList: saveInfo,
+    };
+  }
+
+  //获取topicList
+  async getTopicList(ctx: Context, next: Next) {
+    const { limit = 6, pageNum = 1, tag = 'recommend' } = ctx.query;
+    const topicListRes = await vodService.getTopicList(parseInt(pageNum as string), parseInt(limit as string), tag as string);
+    if (topicListRes) {
+      ctx.body = {
+        code: 200,
+        message: '查询成功',
+        count: topicListRes.count,
+        topicList: topicListRes.rows,
+        pageTotal: Math.ceil(topicListRes.count / (limit as number)),
+      };
+    } else {
+      ctx.body = {
+        code: -1,
+        message: '查询失败',
+      };
+    }
+  }
+
+  //更新某个Topic
+
+  //获取筛选库
+
+  //筛选视频
+  async filterVod(ctx: Context, next: Next) {}
+
+  //获取轮播图
+  async getRotationList(ctx: Context, next: Next) {
+    const { tag = 'recommend' } = ctx.query;
+    const topicListRes = await vodService.getRotationList(tag as string);
+    ctx.body = {
+      code: 200,
+      message: '查询成功',
+      topicList: topicListRes,
     };
   }
 }
