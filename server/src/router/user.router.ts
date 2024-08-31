@@ -14,6 +14,4 @@ router.get('/', async (ctx, next) => {
 
 //收藏
 
-export { router };
-
 export default router.routes();
